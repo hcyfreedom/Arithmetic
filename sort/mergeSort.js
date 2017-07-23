@@ -1,5 +1,6 @@
 /**
  * Created by hanchuyi on 2017/7/14.
+ * @file 归并排序
  */
 function mergeSort(arr) {
     let len = arr.length;

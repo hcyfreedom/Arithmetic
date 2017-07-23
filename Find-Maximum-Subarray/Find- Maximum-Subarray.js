@@ -2,50 +2,50 @@
  * Created by hanchuyi on 2017/7/19.
  */
 
-function findMaxCrossingSubArray(arr) {
+function findMaxCrossingSubArray(base,arr) {
     let len = arr.length;
     let high = len -1;
     let mid = Math.floor(len/2);
-    let leftMaxSum ,rightMaxSum = Number.NEGATIVE_INFINITY;
+    let leftMaxSum =Number.NEGATIVE_INFINITY , rightMaxSum = Number.NEGATIVE_INFINITY;
 
-    let leftSum , rightSum = 0;
-    let maxLeft;
-    let maxRight;
+    let leftSum =0, rightSum = 0;
+    let MaxLeft = mid;
+    let MaxRight = mid;
     if (len <= 1){
-        return [0, len, arr[0]];
+        return [0 + base , len + base, arr[0]];
     }
-    for(let i = mid; i <= mid; i--){
+    for(let i = mid; i >=0; i--){
         leftSum += arr[i];
         if (leftSum > leftMaxSum){
             leftMaxSum = leftSum;
-            maxLeft = i;
+            MaxLeft = i;
         }
     }
-    for(let j = mid + 1; j < high; j++){
+    for(let j = mid + 1; j <=high; j++){
         rightSum += arr[j];
         if(rightSum > rightMaxSum){
             rightMaxSum = rightSum;
-            maxRight = j;
+            MaxRight = j;
         }
     }
-    return [maxLeft, maxRight, (leftMAxSum + rightMAxSum)];
+    return [MaxLeft + base, MaxRight + base, (leftMaxSum + rightMaxSum)];
 }
 
-function findMaxMumSubArray(arr){
+function findMaxMumSubArray(base, arr){
     let len = arr.length;
     if(len <= 1){
-        return [0, len, arr[0]];
+        return [0 + base, len + base, arr[0]];
     }else {
         let mid = Math.floor(len/2);
         let leftArray = arr.slice(0,mid);
         let rightArray = arr.slice(mid);
-        let leftMAxSum = findMaxMumSubArray(leftArray);
-        let rightMAxSum = findMaxMumSubArray(rightArray);
-        let acrossMaxSum = findMaxCrossingSubArray(arr);
-        if(leftMAxSum[2] > rightMAxSum[2] && leftMAxSum[2] > acrossMaxSum[2]){
-            return leftMAxSum;
+        let leftMaxSum = findMaxMumSubArray(base, leftArray);
+        let rightMaxSum = findMaxMumSubArray(base+mid, rightArray);
+        let acrossMaxSum = findMaxCrossingSubArray(base, arr);
+        if(leftMaxSum[2] > rightMaxSum[2] && leftMaxSum[2] > acrossMaxSum[2]){
+            return leftMaxSum;
         }
-        if (rightMAxSum[2] > leftMaxSum[2] && rightMaxSum[2] > acrossMaxSum[2]) {
+        if (rightMaxSum[2] > leftMaxSum[2] && rightMaxSum[2] > acrossMaxSum[2]) {
             return rightMaxSum;
         }
         return acrossMaxSum;
@@ -53,6 +53,6 @@ function findMaxMumSubArray(arr){
 }
 
 let arr =  [ -11, 34, 37, 30, -42, 4, 16, 47, 36, 19 ];
-let result = findMaxMumSubArray(arr);
+let result = findMaxMumSubArray(0, arr);
 console.log(arr)
 console.log('最大子数组下标为'+result[0]+','+result[1]+",和是"+result[2])
